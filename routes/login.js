@@ -26,8 +26,8 @@ router.post('/', async (req, res) => {
         }
 
         // User authenticated
-        // Generate the JWT token
-        const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '1h' });
+        // Generate the JWT token using the JWT_SECRET from the .env file
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         // Set the token in the cookie with secure options
         res.cookie('auth_token', token, {

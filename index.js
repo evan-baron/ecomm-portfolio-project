@@ -5,6 +5,8 @@ import registerRoute from './routes/register.js'; // Import register route
 import recoveryRoute from './routes/recover.js'; // Import recovery route
 import cookieParser from 'cookie-parser'; // Import cookie-parser for handling cookies
 import jwt from 'jsonwebtoken'; // Import JWT for token generation and verification
+import dotenv from 'dotenv';
+dotenv.config(); // This will load the .env file
 
 const app = express();
 const port = 3000;
