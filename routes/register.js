@@ -15,6 +15,18 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Function to check for missing data
+        const missingFields = [];
+        if (!first_name) missingFields.push('first name');
+        if (!last_name) missingFields.push('last name');
+        if (!email) missingFields.push('email');
+        if (!password) missingFields.push('password');
+
+        // If any fields are missing, return the error with the list of missing fields
+        if (missingFields.length > 0) {
+            return res.status(400).json({ message: `Missing required fields: ${missingFields.join(', ')}` });
+        }
+
         // Generate salt and hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -24,6 +36,8 @@ router.post('/', async (req, res) => {
             'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
             [first_name, last_name, email, hashedPassword]
         );
+
+		console.log(result.rows);
 
         // Send back a response (without sending the password!)
         res.json({

@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'; // Import jwt for generating tokens
 import pool from '../db.js';  // Import the database connection
 
 const router = express.Router();
@@ -25,6 +26,17 @@ router.post('/', async (req, res) => {
         }
 
         // User authenticated
+        // Generate the JWT token
+        const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '1h' });
+
+        // Set the token in the cookie with secure options
+        res.cookie('auth_token', token, {
+            httpOnly: true,         // Prevents JavaScript access
+            secure: process.env.NODE_ENV === 'production',  // Only send cookie over HTTPS in production
+            sameSite: 'Strict',     // Prevent CSRF attacks
+            maxAge: 3600000,        // Cookie expiration time (1 hour)
+        });
+
         res.json({
             message: 'Login successful',
             user: {
