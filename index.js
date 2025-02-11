@@ -2,7 +2,7 @@ import express from 'express';
 import pool from './db.js'; // Import the PostgreSQL connection pool
 import loginRoute from './routes/login.js'; // Import login route
 import registerRoute from './routes/register.js'; // Import register route
-import recoveryRoute from './routes/recovery.js'; // Import recovery route
+import recoveryRoute from './routes/recover.js'; // Import recovery route
 
 const app = express();
 const port = 3000;
